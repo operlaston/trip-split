@@ -11,9 +11,10 @@ app.use(express.json())
 // app.use(middleware.requestLogger)
 
 // routers
-app.use("/trips", tripsRouter)
-app.use("/users", usersRouter)
+app.use('/trips', tripsRouter)
+app.use('/users', usersRouter)
 
-app.use(middleware.unknownEndpoint)
+app.all(/.*/, middleware.unknownEndpoint)
+app.use(middleware.errorHandler)
 
 module.exports = app
