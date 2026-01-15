@@ -22,7 +22,7 @@ loginRouter.post('/', async (req, res) => {
 
   // token expires in an hour
   const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: 3600 })
-  res.status(200).json({ token, username: user.username, name: user.name })
+  res.status(200).json({ token, username: user.username, name: user.name, id: user.id })
 })
 
 module.exports = loginRouter

@@ -1,13 +1,9 @@
 import '../styles/LoginPage.css'
 import useAuth from '../store/authStore'
+import { login, signup } from '../api/loginService'
+import { useState } from 'react'
+import { useNavigate } from 'react-router'
 
-const handleLogin = () => {
-  // TODO
-}
-
-const handleSignup = () => {
-  // TODO
-}
 
 const LoginPage = () => {
   const isSignup = useAuth(state => state.isSignup)
@@ -20,20 +16,82 @@ const LoginPage = () => {
 }
 
 const Login = () => {
+  const [formData, setFormData] = useState({
+    username: '',
+    password: ''
+  })
+
+  const { username, password } = formData
+
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
+
   const setSignup = useAuth(state => state.setSignup)
+  const setUser = useAuth(state => state.setUser)
+
+  const navigate = useNavigate()
+
+  const handleChange = e => {
+    setError('')
+    const { name, value } = e.target
+    const newValue = value
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: newValue
+    }))
+  }
+
+  const handleLogin = async (e) => {
+    e.preventDefault()
+    setIsLoading(true)
+    if (username.length === 0) {
+      setError("username field is empty")
+      setIsLoading(false)
+      return
+    }
+    else if (password.length === 0) {
+      setError("password field is empty")
+      setIsLoading(false)
+      return
+    }
+    try {
+      const user = await login({ username, password });
+      setUser(user)
+      navigate('/')
+    }
+    catch (e) {
+      if (e.status === 404) {
+        setError('no user exists with the given username')
+      }
+      else if (e.status === 401) {
+        setError('incorrect password')
+      }
+      else {
+        setError('an unknown error occurred')
+      }
+      setIsLoading(false)
+    }
+  }
+
   return (
     <form onSubmit={handleLogin} className="login-container">
       <h1 className="login-header">
         Login
       </h1>
       <div className="login-inputs-container">
-        <input className="login-input" placeholder="Username" type="text" />
-        <input className="login-input" placeholder="Password" type="password" />
+        <input className="login-input" name="username" placeholder="Username" type="text" value={username} onChange={handleChange} />
+        <input className="login-input" name="password" placeholder="Password" type="password" value={password} onChange={handleChange} />
+      </div>
+      <div className="login-error">
+        {error}
       </div>
       <div className="login-bottom-container">
-        <button type="submit" className="login-button">Log in</button>
+        {isLoading ?
+          <button disabled className="button-loading">Logging in...</button>
+          : <button type="submit" className="login-button">Log in</button>
+        }
         <div className="login-switch-text">
-          Don't have an account? Sign up <span className="login-signup-switch" onClick={setSignup}>here</span>
+          Don't have an account? Sign up <span className="login-signup-switch" onClick={() => { if (!isLoading) setSignup() }}>here</span>
         </div>
       </div>
     </form>
@@ -41,21 +99,80 @@ const Login = () => {
 }
 
 const Signup = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    username: '',
+    password: ''
+  })
+  const { name, username, password } = formData
+  const [isLoading, setIsLoading] = useState('')
+  const [error, setError] = useState('')
+
   const setLogin = useAuth(state => state.setLogin)
+
+  const handleChange = e => {
+    setError('')
+    const { name, value } = e.target
+    const newValue = value
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: newValue
+    }))
+  }
+
+  const handleSignup = async (e) => {
+    e.preventDefault()
+    setIsLoading(true)
+    if (name.length === 0) {
+      setError('name cannot be empty')
+      setIsLoading(false)
+      return
+    }
+    else if (username.length === 0) {
+      setError('username cannot be empty')
+      setIsLoading(false)
+      return
+    }
+    else if (password.length < 8) {
+      setError('password must be at least 8 characters')
+      setIsLoading(false)
+      return
+    }
+    try {
+      await signup({ name, username, password });
+      setLogin()
+    }
+    catch (e) {
+      if (e.status === 409) {
+        setError('username already exists')
+      }
+      else {
+        setError('an unknown error occurred')
+      }
+      setIsLoading(false)
+    }
+  }
+
   return (
     <form onSubmit={handleSignup} className="login-container">
       <h1 className="login-header">
         Signup
       </h1>
       <div className="login-inputs-container">
-        <input className="login-input" placeholder="Name" type="text" />
-        <input className="login-input" placeholder="Username" type="text" />
-        <input className="login-input" placeholder="Password" type="password" />
+        <input className="login-input" name="name" placeholder="Name" type="text" value={name} onChange={handleChange} />
+        <input className="login-input" name="username" placeholder="Username" type="text" value={username} onChange={handleChange} />
+        <input className="login-input" name="password" placeholder="Password" type="password" value={password} onChange={handleChange} />
+      </div>
+      <div className="login-error">
+        {error}
       </div>
       <div className="login-bottom-container">
-        <button type="submit" className="login-button">Sign up</button>
+        {isLoading ?
+          <button disabled className="button-loading">Signing up...</button>
+          : <button type="submit" className="login-button">Sign up</button>
+        }
         <div className="login-switch-text">
-          Already have an account? Log in <span className="login-signup-switch" onClick={setLogin}>here</span>
+          Already have an account? Log in <span className="login-signup-switch" onClick={() => { if (!isLoading) setLogin() }}>here</span>
         </div>
       </div>
     </form>
