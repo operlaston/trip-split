@@ -2,6 +2,14 @@
 
 :root {
   font-family: "Inter", sans-serif;
+  --bg0: #1E1E1E;
+  --bg1: #121212;
+  --input-bg: #2C2C2C;
+  --fg0: #FFFFFF;
+  --input-fg: #E0E0E0;
+  --input-border: #3D3D3D;
+  --button-grad0: #BB86FC;
+  --button-grad1: #9A67EA;
 }
 
 

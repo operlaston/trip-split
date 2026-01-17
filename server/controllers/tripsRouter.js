@@ -1,7 +1,11 @@
 const tripsRouter = require('express').Router()
+const tripMembersRouter = require('./tripMembersRouter')
 const pool = require('../db')
 
 // NOTE: next() is automatically called on error in express 5
+
+// reroute requests about members to the corresponding router
+tripsRouter.use("/:id/members", tripMembersRouter)
 
 // get all
 tripsRouter.get("/", async (req, res) => {
@@ -23,15 +27,37 @@ tripsRouter.get("/:id", async (req, res) => {
 })
 
 // create
-tripsRouter.post("/", async (req, res) => {
-  const { name, target_currency } = req.body
-  const newTrip = await pool.query("\
-    INSERT INTO trips \
-    (name, target_currency) \
-    VALUES ($1, $2) \
-    RETURNING * \
-    ", [name, target_currency])
-  res.status(201).json(newTrip.rows[0])
+tripsRouter.post("/", async (req, res, next) => {
+  try {
+    const { name, target_currency } = req.body
+
+    await pool.query("BEGIN")
+
+    const newTrip = await pool.query("\
+      INSERT INTO trips \
+      (name, target_currency) \
+      VALUES ($1, $2) \
+      RETURNING * \
+      ", [name, target_currency])
+
+    const tripId = newTrip.rows[0].id
+    const userId = req.user.id
+
+    const newTripMember = await pool.query("\
+      INSERT INTO trip_members \
+      (trip_id, user_id) \
+      VALUES ($1, $2) \
+      RETURNING * \
+      ", [tripId, userId])
+
+    await pool.query("COMMIT")
+
+    res.status(201).json(newTrip.rows[0])
+  }
+  catch (err) {
+    await pool.query("ROLLBACK")
+    next(err)
+  }
 })
 
 // update
@@ -61,8 +87,6 @@ tripsRouter.delete("/:id", async (req, res) => {
     return res.status(404).send('id doesnt exist')
   }
   res.status(204).end()
-  console.error(err)
-  res.status(500).end()
 })
 
 module.exports = tripsRouter

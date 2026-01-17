@@ -23,6 +23,10 @@ const errorHandler = (err, req, res, next) => {
     // UNIQUENESSS VIOLATION POSTGRESQL
     res.status(409).send(err.message)
   }
+  else if (err.code === '23503') {
+    // FOREIGN KEY DOESN'T EXIST IN PARENT TABLE
+    res.status(409).send(err.message)
+  }
   else if (err.name === 'JsonWebTokenError') {
     res.status(401).send('JsonWebTokenError: invalid token')
   }
@@ -35,6 +39,13 @@ const errorHandler = (err, req, res, next) => {
 }
 
 const verifyToken = (req, res, next) => {
+  // don't need to verify token in development or test mode
+  if (process.env.NODE_ENV === 'development' ||
+    process.env.NODE_ENV === 'test') {
+    req.user = { id: '1' }
+    return next()
+  }
+
   // retrieve authorization header
   const auth = req.get('Authorization')
   if (auth && auth.startsWith('Bearer')) {
@@ -44,6 +55,7 @@ const verifyToken = (req, res, next) => {
     if (!decodedToken.id) {
       return res.status(401).send('invalid token')
     }
+    req.user = { id: decodedToken.id }
     next()
   }
   else {

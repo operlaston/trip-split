@@ -8,7 +8,7 @@ const saltRounds = 10
 // get all users
 usersRouter.get('/', async (req, res) => {
   const result = await pool.query("\
-    SELECT * FROM users \
+    SELECT id, username, name FROM users \
     ")
   res.json(result.rows)
 })
@@ -17,23 +17,30 @@ usersRouter.get('/', async (req, res) => {
 usersRouter.get('/:id', async (req, res) => {
   const id = req.params.id
   const result = await pool.query("\
-    SELECT * FROM users WHERE id = $1\
+    SELECT id, username, name FROM users WHERE id = $1\
     ", [id])
   if (result.rowCount === 0) {
     return res.status(404).send('id doesnt exist')
   }
+  const user = result.rows[0]
   res.json(result.rows[0])
 })
 
 // update a user
 usersRouter.put('/:id', async (req, res) => {
   const id = req.params.id
+
+  // a user may only modify their own information
+  if (id !== req.user.id) {
+    return res.status(401).send('user may only modify itself')
+  }
+
   const { name, username } = req.body
   const result = await pool.query("\
     UPDATE users \
     SET name = $1, username = $2 \
     WHERE id = $3 \
-    RETURNING * \
+    RETURNING id, username, name \
     ", [name, username, id])
   if (result.rowCount === 0) {
     return res.status(404).send('id doesnt exist')
@@ -44,6 +51,12 @@ usersRouter.put('/:id', async (req, res) => {
 // delete a user
 usersRouter.delete('/:id', async (req, res) => {
   const id = req.params.id
+
+  // a user may only delete itself
+  if (id !== req.user.id) {
+    return res.status(401).send('user may only delete itself')
+  }
+
   const result = await pool.query("\
     DELETE FROM users WHERE id = $1 \
     ", [id])
