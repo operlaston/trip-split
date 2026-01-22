@@ -1,11 +1,15 @@
 const tripsRouter = require('express').Router()
 const tripMembersRouter = require('./tripMembersRouter')
+const transactionsRouter = require('./transactionsRouter')
 const pool = require('../db')
 
 // NOTE: next() is automatically called on error in express 5
 
 // reroute requests about members to the corresponding router
 tripsRouter.use("/:id/members", tripMembersRouter)
+
+// reroute requests about transactions to the corresponding router
+tripsRouter.use("/:id/transactions", transactionsRouter)
 
 // get all
 tripsRouter.get("/", async (req, res) => {
