@@ -64,6 +64,36 @@ tripsRouter.post("/", async (req, res, next) => {
   }
 })
 
+// lock
+tripsRouter.put("/:id/lock", async (req, res) => {
+  const id = req.params.id;
+  const lockedTrip = await pool.query("\
+    UPDATE trips \
+    SET locked = true \
+    RETURNING *\
+    ")
+  if (lockedTrip.rowCount == 0) {
+    return res.status(404).send('id doesnt exist')
+  }
+
+  res.json(lockedTrip.rows[0])
+})
+
+// unlock
+tripsRouter.put("/:id/unlock", async (req, res) => {
+  const id = req.params.id;
+  const unlockedTrip = await pool.query("\
+    UPDATE trips \
+    SET locked = false \
+    RETURNING *\
+    ")
+  if (unlockedTrip.rowCount == 0) {
+    return res.status(404).send('id doesnt exist')
+  }
+
+  res.json(unlockedTrip.rows[0])
+})
+
 // update
 tripsRouter.put("/:id", async (req, res) => {
   const id = req.params.id;

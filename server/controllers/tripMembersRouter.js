@@ -35,6 +35,21 @@ tripMembersRouter.get('/', async (req, res) => {
 tripMembersRouter.post('/', async (req, res) => {
   const tripId = req.params.id // refers to trip id
   const userId = req.user.id
+
+  // first check if the trip is locked
+  const checkLockedResponse = await pool.query("\
+    SELECT locked from trips \
+    WHERE id = $1\
+    ", [tripId])
+
+  if (checkLockedResponse.rowCount === 0) {
+    return res.status(404).json('trip doesnt exist')
+  }
+
+  if (checkLockedResponse.rows[0].locked) {
+    return res.status(401).json('trip is locked -- no new members may join')
+  }
+
   const response = await pool.query("\
     INSERT INTO trip_members \
     (trip_id, user_id) \
