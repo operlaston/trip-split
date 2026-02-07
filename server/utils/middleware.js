@@ -27,6 +27,10 @@ const errorHandler = (err, req, res, next) => {
     // FOREIGN KEY DOESN'T EXIST IN PARENT TABLE
     res.status(409).send(err.message)
   }
+  else if (err.code === '23502') {
+    // NON-NULL VALUE REQUIRED BUT NULL VALUE FOUND
+    res.status(409).send(err.message)
+  }
   else if (err.name === 'JsonWebTokenError') {
     res.status(401).send('JsonWebTokenError: invalid token')
   }
