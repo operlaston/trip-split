@@ -1,0 +1,5 @@
+.home-page-container {
+  background-color: var(--bg0);
+  color: var(--fg0);
+  min-height: 100vh;
+}

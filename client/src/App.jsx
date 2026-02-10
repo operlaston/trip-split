@@ -2,6 +2,7 @@ import { Routes, Route, Navigate, Outlet } from 'react-router'
 import LoginPage from './pages/LoginPage'
 import HomePage from './pages/HomePage'
 import useAuth from './store/authStore'
+import Navbar from './components/Navbar'
 
 function App() {
 
@@ -23,7 +24,11 @@ const ProtectedRoute = () => {
     return <Navigate to="/login" replace />
   }
 
-  return <Outlet />
+  return (
+    <>
+      <Outlet />
+    </>
+  )
 }
 
 export default App

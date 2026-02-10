@@ -11,9 +11,16 @@ tripsRouter.use("/:id/members", tripMembersRouter)
 // reroute requests about transactions to the corresponding router
 tripsRouter.use("/:id/transactions", transactionsRouter)
 
-// get all
+// get all for the asking user
 tripsRouter.get("/", async (req, res) => {
-  const trips = await pool.query("SELECT * FROM trips")
+  const userId = req.user.id
+
+  const trips = await pool.query("\
+    SELECT t.* FROM trips t \
+    JOIN trip_members tm \
+    ON t.id = tm.trip_id \
+    WHERE tm.user_id = $1\
+  ", [userId])
   res.json(trips.rows)
 })
 

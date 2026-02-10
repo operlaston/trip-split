@@ -4,9 +4,19 @@ const pool = require('../db')
 
 transactionsRouter.use('/:transactionId/splits', transactionSplitsRouter)
 
+const isTripMember = async (tripId, userId) => {
+  const response = await pool.query("\
+    SELECT * FROM trip_members \
+    WHERE trip_id = $1 AND user_id = $2\
+    ", [tripId, userId])
+  if (response.rowCount === 0) return false
+  return true
+}
+
 // get all transactions for a trip
 transactionsRouter.get('/', async (req, res) => {
   const tripId = req.params.id
+  const userId = req.user.id
 
   let response = await pool.query("\
     SELECT * FROM transactions \
@@ -15,6 +25,11 @@ transactionsRouter.get('/', async (req, res) => {
 
   if (response.rowCount === 0) {
     return res.status(404).send('trip doesnt exist')
+  }
+
+  const isUserTripMember = await isTripMember(tripId, userId)
+  if (!isUserTripMember) {
+    return res.status(401).send('user is not a member of the trip for which the transaction is part of')
   }
 
   response = await pool.query("\
