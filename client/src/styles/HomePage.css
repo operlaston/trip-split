@@ -2,4 +2,128 @@
   background-color: var(--bg0);
   color: var(--fg0);
   min-height: 100vh;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 10rem;
+  /* display: grid; */
+  /* place-items: center; */
+  font-size: 1.2rem;
+}
+
+.home-content-container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 3rem;
+}
+
+.home-trip-card {
+  border: solid #353535 2px;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1.5rem;
+  max-width: 30rem;
+  min-width: 25rem;
+  overflow-wrap: break-word;
+  background-color: #303030;
+  border-radius: 1rem;
+}
+
+.home-top-container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+}
+
+.home-greet {
+  font-size: 2.6rem;
+}
+
+.home-trip-actions {
+  display: flex;
+  flex-direction: row;
+  /* justify-content: space-between; */
+  column-gap: 1rem;
+}
+
+.home-trips-section-container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+}
+
+
+.create-trip-button {
+  background-color: #2D4868;
+}
+
+.join-trip-button {
+  background-color: #2E4F32;
+}
+
+.home-action-button {
+  color: #E1E1E1;
+  padding: 1rem 0;
+  font-size: 1.2rem;
+  border-radius: 2rem;
+  width: 100%;
+  transition: 0.3s;
+}
+
+.home-action-button:hover {
+  opacity: 0.85;
+}
+
+.trips-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.name-status-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status-complete {
+  background-color: #2B4830;
+  color: #4CAF50;
+}
+
+.status-in-progress {
+  background-color: #3E3E3E;
+  color: #BDBDBD;
+}
+
+.home-trip-status {
+  border-radius: 0.5rem;
+  padding: 0 0.5rem;
+  font-size: 1.1rem;
+}
+
+.view-trip-button {
+  background-color: transparent;
+  border: solid #E1E1E1 2px;
+  border-radius: 0.5rem;
+  color: #E1E1E1;
+  align-self: flex-start;
+  font-size: 1.1rem;
+  padding: 0.5rem 2rem;
+  transition: 0.3s;
+}
+
+.view-trip-button:hover {
+  background-color: #E1E1E120;
+}
+
+.home-trip-name {
+  font-size: 1.5rem;
+}
+
+.home-trip-created {
+  font-size: 1rem;
+  color: #A0A0A0;
+  padding-bottom: 1rem;
 }

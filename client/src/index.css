@@ -12,6 +12,15 @@
   --button-grad1: #9A67EA;
 }
 
+button {
+  cursor: pointer;
+  border: none;
+}
+
+h2 {
+  font-weight: 300;
+}
+
 
 
 /* CSS RESET */
