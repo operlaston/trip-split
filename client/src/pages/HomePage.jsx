@@ -3,6 +3,7 @@ import '../styles/HomePage.css'
 import Navbar from '../components/Navbar.jsx'
 import { useQuery } from '@tanstack/react-query'
 import { getTrips } from '../api/tripService.js'
+import { useNavigate } from 'react-router'
 import TripCard from '../components/home/TripCard.jsx'
 
 const testTrips = [
@@ -30,17 +31,20 @@ const testTrips = [
 
 const HomePage = () => {
   const user = useAuth(state => state.user)
-  // const tripsQuery = useQuery({
-  //   queryKey: ['trips'],
-  //   queryFn: getTrips
-  // })
+  const navigate = useNavigate()
+  const tripsQuery = useQuery({
+    queryKey: ['trips'],
+    queryFn: getTrips
+  })
 
-  const tripsQuery = {
-    data: testTrips
-  }
+  // const tripsQuery = {
+  //   data: testTrips
+  // }
 
   const trips = tripsQuery.data
-  trips.sort((a, b) => b.in_progress - a.in_progress)
+  if (trips) {
+    trips.sort((a, b) => b.in_progress - a.in_progress)
+  }
 
   return (
     <div className="home-page-container">
@@ -50,7 +54,7 @@ const HomePage = () => {
             Welcome back, {user.name}!
           </h2>
           <div className="home-trip-actions">
-            <button className="create-trip-button home-action-button">+ Create a New Trip</button>
+            <button className="create-trip-button home-action-button" onClick={() => navigate('/newtrip')}>+ Create a New Trip</button>
             <button className="join-trip-button home-action-button">Join a Trip</button>
           </div>
         </div>

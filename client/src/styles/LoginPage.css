@@ -41,6 +41,11 @@
   font-size: 1.2rem;
 }
 
+.login-input:focus {
+  outline: none;
+  border-color: var(--fg0);
+}
+
 .login-error {
   color: red;
   font-style: italic;

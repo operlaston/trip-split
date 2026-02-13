@@ -1,0 +1,78 @@
+.new-trip-page-container {
+  background-color: var(--bg0);
+  color: var(--fg0);
+  min-height: 100vh;
+  padding: 2rem;
+  display: grid;
+  place-items: center;
+  font-size: 1.2rem;
+}
+
+.new-trip-form {
+  max-width: 30rem;
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.5rem;
+}
+
+.new-trip-form input {
+  background-color: var(--input-bg);
+  color: var(--input-fg);
+  border: solid var(--input-border) 2px;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 1.4rem;
+}
+
+.new-trip-form input:focus {
+  outline: none;
+  border-color: var(--fg0);
+}
+
+.new-trip-form select {
+  background-color: var(--input-bg);
+  color: var(--input-fg);
+  /* border: solid var(--input-border) 2px; */
+  border: none;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.new-trip-form select option {
+  font-size: 1rem;
+}
+
+.new-trip-form button {
+  color: #E1E1E1;
+  padding: 0.75rem 0;
+  font-size: 1.2rem;
+  border-radius: 0.5rem;
+  transition: 0.3s;
+  background-color: #2E4F32;
+  margin-top: 0.5rem;
+}
+
+.new-trip-form button:hover {
+  opacity: 0.8;
+}
+
+.new-trip-note {
+  /* padding-top: 0.5rem; */
+  font-size: 0.95rem;
+}
+
+.new-trip-header {
+  padding-bottom: 1.5rem;
+  font-size: 4rem;
+  font-weight: 300;
+}
+
+.new-trip-back {
+  padding-bottom: 0.5rem;
+  cursor: pointer;
+}
+
+.new-trip-back:hover {
+  text-decoration: underline;
+}
