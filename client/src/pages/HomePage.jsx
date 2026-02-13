@@ -61,20 +61,25 @@ const HomePage = () => {
         <div className="home-trips-section-container">
           <h2>Your Trips</h2>
           <div className="trips-wrapper">
-            {tripsQuery.isPending && <div>loading trips...</div>}
-            {tripsQuery.isError && <div>an error occurred while trying to load trips</div>}
-            {trips &&
-              trips.map(trip => {
-                return (
-                  <TripCard
-                    key={trip.id}
-                    name={trip.name}
-                    status={trip.in_progress ? "In Progress" : "Completed"}
-                    created_at={trip.created_at}
-                  />
+            {
+              tripsQuery.isPending
+                ? <div>loading trips...</div>
+                : (tripsQuery.isError
+                  ? <div>an error occurred while trying to load trips</div>
+                  :
+                  trips.map(trip => {
+                    return (
+                      <TripCard
+                        key={trip.id}
+                        name={trip.name}
+                        status={trip.in_progress ? "In Progress" : "Completed"}
+                        created_at={trip.created_at}
+                      />
+                    )
+                  })
                 )
-              })
             }
+
           </div>
         </div>
       </div>
