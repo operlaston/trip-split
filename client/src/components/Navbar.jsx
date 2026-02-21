@@ -1,15 +1,19 @@
 import { Link } from "react-router"
 import '../styles/Navbar.css'
+import useAuth from '../store/authStore'
 
 const Navbar = () => {
+  const setUser = useAuth(state => state.setUser)
+
   return (
     <nav>
-      <Link to='/'>
-        TripSplit
-      </Link>
-      <div className="nav-buttons-wrapper">
-        <button className="join-trip-button">Join a Trip</button>
-        <button className="create-trip-button">Create a Trip</button>
+      <div className="nav-inner-wrapper">
+        <Link to='/'>
+          TripSplit
+        </Link>
+        <div className="nav-buttons-wrapper">
+          <button onClick={() => setUser(null)}>Logout</button>
+        </div>
       </div>
     </nav>
   )

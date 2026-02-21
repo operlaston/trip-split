@@ -73,7 +73,7 @@ const Signup = () => {
       </div>
       <div className="login-bottom-container">
         {isLoading ?
-          <button disabled className="button-loading">Signing up...</button>
+          <button disabled className="button-loading login-button">Signing up...</button>
           : <button type="submit" className="login-button">Sign up</button>
         }
         <div className="login-switch-text">

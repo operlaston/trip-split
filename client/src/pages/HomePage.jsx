@@ -51,6 +51,7 @@ const HomePage = () => {
                         name={trip.name}
                         status={trip.in_progress ? "In Progress" : "Completed"}
                         created_at={trip.created_at}
+                        tripId={trip.id}
                       />
                     )
                   })

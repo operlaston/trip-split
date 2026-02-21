@@ -1,26 +1,27 @@
 nav {
   display: flex;
   font-size: 1.25rem;
-  justify-content: space-between;
-  padding: 0.3rem 1rem;
-  background: linear-gradient(180deg, var(--bg0) 0%, var(--bg1) 100%);
+  justify-content: center;
+  padding: 1rem 2rem;
+  background: inherit;
   color: var(--fg0);
-  align-items: center;
   position: fixed;
   left: 0;
   top: 0;
   right: 0;
 }
 
-.nav-buttons-wrapper {
+.nav-inner-wrapper {
   display: flex;
-  column-gap: 0.5rem;
+  min-width: 60rem;
+  justify-content: space-between;
+  align-items: center;
 }
 
+
 nav button {
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
   cursor: pointer;
-  background: linear-gradient(90deg, #BB86FC 0%, #9A67EA 100%);
   color: #000000;
   border: none;
   border-radius: 0.5rem;

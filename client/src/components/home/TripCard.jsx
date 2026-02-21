@@ -1,6 +1,9 @@
-const TripCard = ({ name, status, created_at }) => {
+import { useNavigate } from "react-router";
+
+const TripCard = ({ name, status, created_at, tripId }) => {
   const dateObj = new Date(created_at);
   const dateReadable = dateObj.toDateString();
+  const navigate = useNavigate()
 
   return (
     <div className="home-trip-card">
@@ -10,7 +13,7 @@ const TripCard = ({ name, status, created_at }) => {
         {status === "In Progress" && <div className="status-in-progress home-trip-status">{status}</div>}
       </div>
       <div className="home-trip-created">Date Created: {dateReadable}</div>
-      <button className="view-trip-button">View Trip</button>
+      <button className="view-trip-button" onClick={() => navigate(`/trips/${tripId}`)}>View Trip</button>
     </div>
   )
 }

@@ -50,7 +50,7 @@ const NewTripPage = () => {
         </h1>
         <input type="text" placeholder="Trip Name" name="name" onChange={handleInput} value={formData.name} />
         <select name="targetCurrency" value={formData.targetCurrency} onChange={handleInput}>
-          <option value="USD">-- Please Select Target Currency --</option>
+          <option value="USD">-- Please Select Currency --</option>
           <option value="USD">USD</option>
           <option value="JPY">JPY</option>
           <option value="CNY">CNY</option>
@@ -58,7 +58,7 @@ const NewTripPage = () => {
         {
           isLoading ? <button className="button-loading">Creating Trip...</button> : <button>Create</button>
         }
-        <div className="new-trip-note">*Note: Target currency is the currency you plan to use to pay your friends back. All payments from the trip will be converted back to this currency.</div>
+        <div className="new-trip-note">*Note: Currency is the unit of money you will use on this trip to track all payments.</div>
         <div className="login-error">{error}</div>
       </form>
     </div>

@@ -8,7 +8,9 @@ tripMembersRouter.get('/', async (req, res) => {
   // a user should only be able to see trip members
   // if they are part of the trip
   const response = await pool.query("\
-    SELECT user_id, joined_at FROM trip_members \
+    SELECT tm.user_id, tm.joined_at, u.name, u.username \
+    FROM trip_members tm JOIN users u \
+    ON u.id = tm.user_id \
     WHERE trip_id = $1 \
     ", [tripId])
 

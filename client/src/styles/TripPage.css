@@ -1,0 +1,14 @@
+.trip-page-container {
+  background-color: var(--bg0);
+  color: var(--fg0);
+  min-height: 100vh;
+  padding: 2rem;
+  display: grid;
+  place-items: center;
+  font-size: 1.2rem;
+}
+
+.member-join-date {
+  color: gray;
+  font-style: italic;
+}
