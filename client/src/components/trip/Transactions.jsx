@@ -1,41 +1,18 @@
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { useParams } from "react-router"
 import { getTransactions } from "../../api/tripService"
 
 const Transactions = () => {
   const { tripId } = useParams()
+  const queryClient = useQueryClient()
 
+  const trip = queryClient.getQueryData(['trip', tripId])
   const transactionsQuery = useQuery({
     queryKey: ['transactions', tripId],
-    queryFn: () => getTransactions(tripId)
+    queryFn: getTransactions
   })
 
-  if (transactionsQuery.isPending) {
-    return (
-      <>
-        <h2>
-          Transactions
-        </h2>
-        <div>
-          Loading Transactions...
-        </div>
-      </>
-    )
-  }
-
-  else if (transactionsQuery.isError) {
-    console.error(transactionsQuery.error)
-    return (
-      <>
-        <h2>
-          Transactions
-        </h2>
-        <div className="login-error">
-          An error has occurred while loading transactions.
-        </div>
-      </>
-    )
-  }
+  const transactions = transactionsQuery.data
 
   return (
     <>
@@ -43,15 +20,16 @@ const Transactions = () => {
         Transactions
       </h2>
       {
-        transactionsQuery.data.length === 0
+        transactions.length === 0
           ? <div>This trip does not yet have any transactions</div>
           :
-          transactionsQuery.data.map(transaction => {
+          transactions.map(transaction => {
             const dateObj = new Date(transaction.created_at);
-            {/* const dateCreated = dateObj.toDateString(); */ }
+            const dateCreated = dateObj.toDateString();
             return (
               <div>
-                {transaction.paying_user_name} ({transaction.paying_user_username}) paid {transaction.amount_paid} on {dateObj}
+                {transaction.user_username} paid {transaction.amount_paid} {trip.target_currency} on
+                <span className="date-text"> {dateCreated}</span>
               </div>
             )
           })

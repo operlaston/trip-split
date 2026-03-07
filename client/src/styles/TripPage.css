@@ -9,7 +9,7 @@
   align-items: center;
 }
 
-.member-join-date {
+.date-text {
   color: gray;
   font-style: italic;
 }
@@ -26,11 +26,13 @@
   font-size: 4rem;
   /* align-self: center; */
 }
-.trip-content-container h1 span{
-  padding-right: 0.5rem;  
+
+.trip-content-container h1 span {
+  padding-right: 0.5rem;
 }
-.trip-content-container h1 svg{
-  cursor:pointer;
+
+.trip-content-container h1 svg {
+  cursor: pointer;
 }
 
 .trip-actions {
@@ -53,6 +55,7 @@
   padding: 0.75rem 1.25rem;
   border-radius: 0.5rem;
   transition: 0.3s;
+  border: 1px solid #5c8768;
 }
 
 .add-transaction-btn:hover {
@@ -76,10 +79,11 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(0, 0, 0, 0.3); 
+  background: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(4px);
   display: grid;
   place-items: center;
+  z-index: 1000;
 }
 
 .new-transaction-form {
@@ -106,10 +110,11 @@
 }
 
 /* .new-transaction-label-input label { */
-  /* font-size: 0.95rem; */
+/* font-size: 0.95rem; */
 /* } */
 
-.new-transaction-label-input input, select {
+.new-transaction-label-input input,
+select {
   background: var(--input-bg2);
   color: var(--input-fg);
   border: solid var(--input-border2) 1px;
@@ -130,7 +135,7 @@
   position: relative;
 }
 
-.new-transaction-amount-input-container input{
+.new-transaction-amount-input-container input {
   width: 100%;
 }
 
@@ -144,4 +149,48 @@
 
 .new-transaction-form button {
   margin-top: 0;
+}
+
+.transaction-preview-header {
+  font-weight: 500;
+  font-size: 1.3rem;
+}
+
+.transaction-preview-row {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 0.3rem;
+}
+
+.new-transaction-preview input {
+  background: var(--input-bg2);
+  color: var(--input-fg);
+  border: none;
+  border-bottom: solid var(--input-border2) 2px;
+  padding: 0.5rem;
+  max-width: 8rem;
+  max-height: 2rem;
+}
+
+.new-transaction-preview input:focus {
+  outline: none;
+  border-bottom: solid white 2px;
+}
+
+.new-transaction-split-evenly-wrapper button {
+  background-color: #4c4357;
+  color: #e9e3f2;
+  border: 1px solid #71717a;
+  width: 100%;
+  padding: 0.7rem;
+  border-radius: 0.5rem;
+  transition: 0.3s;
+}
+
+.new-transaction-split-evenly-wrapper button:hover {
+  opacity: 0.8;
+}
+
+.transaction-split-input-wrapper {
+  padding-left: 1rem;
 }

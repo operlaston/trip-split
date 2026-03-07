@@ -47,11 +47,6 @@
   border-color: var(--fg0);
 }
 
-.login-error {
-  color: red;
-  font-style: italic;
-}
-
 .login-bottom-container {
   display: flex;
   flex-direction: column;
@@ -79,6 +74,7 @@
   /* width: 100%; */
   opacity: 0.6;
   cursor: unset;
+  pointer-events: none;
 }
 
 .login-signup-switch {

@@ -18,10 +18,10 @@ transactionsRouter.get('/', async (req, res) => {
   const tripId = req.params.id
   const userId = req.user.id
 
-  let response = await pool.query("\
-    SELECT * FROM transactions \
-    WHERE trip_id = $1\
-    ", [tripId])
+  // let response = await pool.query("\
+  //   SELECT * FROM transactions \
+  //   WHERE trip_id = $1\
+  //   ", [tripId])
 
   // if (response.rowCount === 0) {
   //   return res.status(404).send('trip doesnt exist')
@@ -34,9 +34,9 @@ transactionsRouter.get('/', async (req, res) => {
 
   response = await pool.query("\
     SELECT t.id as transaction_id, t.trip_id, \
-      u.id AS paying_user_id, u.name AS paying_user_name, \
-      u.username AS paying_user_username, t.amount_paid, t.currency, \
-      t.created_at AS transaction_created_at, t.removed \
+      u.id AS user_id, \
+      u.username AS user_username, t.amount_paid, t.currency, \
+      t.created_at AS created_at, t.removed \
     FROM transactions t \
     JOIN users u \
     ON t.paying_user = u.id \
@@ -47,9 +47,9 @@ transactionsRouter.get('/', async (req, res) => {
 })
 
 // add a transaction and transaction splits for a trip
-// request body: { amountPaid, description, transactionSplits }
+// request body: { payingUser, amountPaid, description, transactionSplits }
 // transactionSplits is an array of { owingUser, amountOwed } objects
-transactionsRouter.post('/', async (req, res) => {
+transactionsRouter.post('/', async (req, res, next) => {
   const tripId = req.params.id
   const userId = req.user.id
 
@@ -67,7 +67,7 @@ transactionsRouter.post('/', async (req, res) => {
   try {
     // transactionSplits is an array of objects
     // that contains the owingUser and the amountOwed
-    const { amountPaid, description, transactionSplits } = req.body
+    const { payingUser, amountPaid, description, transactionSplits } = req.body
 
     // start transaction
     await pool.query("BEGIN")
@@ -78,7 +78,7 @@ transactionsRouter.post('/', async (req, res) => {
       (trip_id, paying_user, amount_paid, description) \
       VALUES ($1, $2, $3, $4) \
       RETURNING *\
-      ", [tripId, userId, amountPaid, description])
+      ", [tripId, payingUser, amountPaid, description])
 
     const transactionId = response.rows[0].id
 
@@ -107,7 +107,7 @@ transactionsRouter.post('/', async (req, res) => {
 })
 
 // remove a transaction for a trip
-transactionsRouter.delete('/:transactionId', async (req, res) => {
+transactionsRouter.delete('/:transactionId', async (req, res, next) => {
   const tripId = req.params.id
   const transactionId = req.params.transactionId
 

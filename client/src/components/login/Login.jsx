@@ -77,7 +77,7 @@ const Login = () => {
         <input className="login-input" name="username" placeholder="Username" type="text" value={username} onChange={handleChange} />
         <input className="login-input" name="password" placeholder="Password" type="password" value={password} onChange={handleChange} />
       </div>
-      <div className="login-error">
+      <div className="error-message">
         {error}
       </div>
       <div className="login-bottom-container">

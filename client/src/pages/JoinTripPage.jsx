@@ -53,7 +53,7 @@ const JoinTripPage = () => {
         {
           isLoading ? <button disabled className="button-loading">Joining...</button> : <button>Join</button>
         }
-        <div className="login-error">{error}</div>
+        <div className="error-message">{error}</div>
       </form>
     </div>
   )

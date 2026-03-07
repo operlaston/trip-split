@@ -59,7 +59,7 @@ const NewTripPage = () => {
           isLoading ? <button className="button-loading">Creating Trip...</button> : <button>Create</button>
         }
         <div className="new-trip-note">*Note: Currency is the unit of money you will use on this trip to track all payments.</div>
-        <div className="login-error">{error}</div>
+        <div className="error-message">{error}</div>
       </form>
     </div>
   )

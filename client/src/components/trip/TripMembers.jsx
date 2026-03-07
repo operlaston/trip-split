@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { useParams } from "react-router"
 import { getTripMembers } from "../../api/tripService"
 
@@ -7,35 +7,8 @@ const TripMembers = () => {
 
   const tripMembersQuery = useQuery({
     queryKey: ['tripMembers', tripId],
-    queryFn: () => getTripMembers(tripId)
+    queryFn: getTripMembers
   })
-
-  if (tripMembersQuery.isPending) {
-    return (
-      <>
-        <h2>
-          Trip Members
-        </h2>
-        <div>
-          Loading Trip Members...
-        </div>
-      </>
-    )
-  }
-
-  else if (tripMembersQuery.isError) {
-    console.error(tripMembersQuery.error)
-    return (
-      <>
-        <h2>
-          Trip Members
-        </h2>
-        <div className="login-error">
-          An error has occurred while loading trip members.
-        </div>
-      </>
-    )
-  }
 
   const tripMembers = tripMembersQuery.data
 
@@ -50,7 +23,7 @@ const TripMembers = () => {
           const dateJoined = dateObj.toDateString();
           return (
             <div key={member.user_id}>
-              {member.name} ({member.username}) <span className="member-join-date">Joined: {dateJoined}</span>
+              {member.username} <span className="date-text">Joined: {dateJoined}</span>
             </div>
           )
         })

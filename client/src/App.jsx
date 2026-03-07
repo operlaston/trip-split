@@ -34,7 +34,7 @@ function App() {
 
   if (isLoading) {
     return (
-      <div>
+      <div className="initializing-page">
         Initializing...
       </div>
     )

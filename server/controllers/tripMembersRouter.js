@@ -62,7 +62,7 @@ tripMembersRouter.post('/', async (req, res) => {
 })
 
 // remove a member from a trip
-tripMembersRouter.delete('/', async (req, res) => {
+tripMembersRouter.delete('/', async (req, res, next) => {
   try {
     const tripId = req.params.id
     const userId = req.user.id
