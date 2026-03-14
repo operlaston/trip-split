@@ -43,6 +43,14 @@ transactionsRouter.get('/', async (req, res) => {
     WHERE t.trip_id = $1\
     ", [tripId])
 
+  const getSplitsResponse = await pool.query("\
+    SELECT ts.transaction_id, ts.amount_owed, u.id as owing_user_id, u.username as owing_user_username, u.name as owing_user_name \
+    FROM transaction_splits ts \
+    JOIN users u \
+    ON ts.owing_user = u.id \
+    WHERE ts.transaction_id = $1\
+    ", [transactionId])
+
   res.json(response.rows)
 })
 
@@ -146,6 +154,35 @@ transactionsRouter.delete('/:transactionId', async (req, res, next) => {
     next(err)
   }
 
+})
+
+// get all transactions AND transaction splits for a trip
+transactionsRouter.get('/splits', async (req, res) => {
+  const tripId = req.params.id
+  const userId = req.user.id
+
+  const isUserTripMember = await isTripMember(tripId, userId)
+  if (!isUserTripMember) {
+    return res.status(403).send('user is not a member of the trip for which the transaction is part of')
+  }
+
+  response = await pool.query("\
+    SELECT t.id as transaction_id, \
+      u1.id AS paying_user_id, \
+      u1.username AS paying_user_username, t.amount_paid, t.currency, \
+      t.created_at AS created_at, t.removed, ts.amount_owed, \
+      u2.id AS owing_user_id, u2.username AS owing_user_username \
+    FROM transactions t \
+    JOIN users u1 \
+    ON t.paying_user = u1.id \
+    JOIN transaction_splits ts \
+    ON t.id = ts.transaction_id \
+    JOIN users u2 \
+    ON u2.id = ts.owing_user \
+    WHERE t.trip_id = $1\
+    ", [tripId])
+
+  res.json(response.rows)
 })
 
 module.exports = transactionsRouter

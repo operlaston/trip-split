@@ -30,7 +30,7 @@ export const getTripMembers = async (tripId) => {
 }
 
 export const getTransactions = async (tripId) => {
-  const response = await api.get(`/trips/${tripId}/transactions`)
+  const response = await api.get(`/trips/${tripId}/transactions/splits`)
   return response.data
 }
 

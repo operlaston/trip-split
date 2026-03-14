@@ -11,3 +11,4 @@ export const createTransaction = async ({ tripId, newTransaction }) => {
   })
   return response.data
 }
+

@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useParams } from "react-router"
 import useAuth from "../../store/authStore"
 import { createTransaction } from "../../api/transactionService"
+import "../../styles/NewTransaction.css"
 
 const NewTransaction = () => {
   const user = useAuth(state => state.user)
@@ -90,7 +91,7 @@ const NewTransaction = () => {
 
   const splitEvenly = () => {
     const equalSplit = Math.floor((formData.amount / tripMembers.length) * 100) / 100
-    const leftover = formData.amount % equalSplit
+    const leftover = equalSplit === 0 ? 0 : formData.amount % equalSplit
     const equalSplits = {}
     tripMembers.forEach(member => {
       equalSplits[member.user_id] = equalSplit;
@@ -163,13 +164,13 @@ const NewTransaction = () => {
         </div>
         <div className="new-transaction-label-input">
           <label htmlFor="tactn-desc">Description</label>
-          <input id="tactn-desc" type="text" placeholder="What is this transaction for?" name="description" onChange={handleChange} value={formData.description} />
+          <input id="tactn-desc" type="text" maxLength="50" placeholder="What is this transaction for?" name="description" onChange={handleChange} value={formData.description} />
         </div>
         <div className="new-transaction-label-input">
           <label htmlFor="tactn-amount">Amount</label>
           <div className="new-transaction-amount-input-container">
             <div className="new-transaction-currency">{trip.target_currency}</div>
-            <input id="tactn-amount" type="text" placeholder="How much did you pay?" name="amount" onChange={handleChange} value={formData.amount} />
+            <input id="tactn-amount" type="text" maxLength="12" placeholder="How much did you pay?" name="amount" onChange={handleChange} value={formData.amount} />
           </div>
         </div>
         <div className="new-transaction-split-evenly-wrapper">
